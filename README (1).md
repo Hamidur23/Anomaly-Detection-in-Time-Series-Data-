@@ -1,4 +1,4 @@
-🧠 Anomaly Detection in Time Series Data
+--🧠 Anomaly Detection in Time Series Data
 Welcome to Anomaly Detection in Time Series Data – a cutting-edge platform for real-time anomaly detection in time series datasets.
 
 This powerful tool leverages Machine Learning (Isolation Forest) and Deep Learning (LSTM) to detect abnormal behaviors in data, helping organizations stay ahead of critical events. Featuring a sleek, interactive web interface built with Flask, HTML/CSS, and JavaScript, this solution is optimized for accuracy, performance, and scalability.
