@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Series Anomaly Detection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+</head>
+<body class="container mt-5">
+    <h1 class="mb-4">Time Series Anomaly Detection</h1>
+    <form id="dataForm" class="mb-4">
+        <div class="mb-3">
+            <label for="values" class="form-label">Enter values (comma-separated):</label>
+            <input type="text" class="form-control" id="values" name="values" required>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="submitData()">Detect Anomaly</button>
+    </form>
+    <div id="result" class="alert" role="alert" style="display: none;"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function submitData() {
+            const values = document.getElementById('values').value.split(',').map(Number);
+            const resultDiv = document.getElementById('result');
+
+            resultDiv.style.display = 'none';
+            resultDiv.className = 'alert';
+
+            fetch('/detect-anomalies', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({time_series: values}),
+            })
+            .then(response => response.json())
+            .then(data => {
+                resultDiv.style.display = 'block';
+                if (data.anomaly_indices && data.anomaly_indices.length > 0) {
+                    resultDiv.className += ' alert-danger';
+                    resultDiv.innerText = Anomalies Detected at indices: ${data.anomaly_indices.join(', ')};
+                } else {
+                    resultDiv.className += ' alert-success';
+                    resultDiv.innerText = 'No Anomalies Detected';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                resultDiv.style.display = 'block';
+                resultDiv.className += ' alert-warning';
+                resultDiv.innerText = 'An error occurred while processing your request.';
+            });
+        }
+    </script>
+</body>
+</html>
